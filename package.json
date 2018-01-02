@@ -1,0 +1,24 @@
+{
+  "name": "dcmtk-node",
+  "version": "0.1.0",
+  "description": "Node wrapper for OFFIS DCMTK DICOM library",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/hopkinsdeeplearning/dcmtk-node.git"
+  },
+  "author": "Jason Hostetter MD",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/hopkinsdeeplearning/dcmtk-node#readme",
+  "dependencies": {
+    "shell-escape": "^0.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
