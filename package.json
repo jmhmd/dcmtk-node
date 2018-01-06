@@ -17,7 +17,8 @@
   "license": "UNLICENSED",
   "homepage": "https://bitbucket.org/hopkinsdeeplearning/dcmtk-node#readme",
   "dependencies": {
-    "shell-escape": "^0.2.0"
+    "shell-escape": "^0.2.0",
+    "split2": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^4.14.0",

@@ -4,12 +4,18 @@ const outputParsers = require('./output-parsers');
 const path = require('path');
 
 module.exports = (_options) => {
-  const { command, platform, settings, outputInStderr } = _options;
+  const {
+    command, platform, settings, outputInStderr,
+  } = _options;
 
   const binaryString = path.join(platform.binaryPath, command);
   let execString = `${binaryString}`;
 
-  return function (options, callback) {
+  return function basicWrapper(_options2, _callback) {
+    let callback = _callback;
+    let options = _options2;
+    const env = settings.env || {};
+
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
@@ -23,17 +29,22 @@ module.exports = (_options) => {
     if (!args) args = [];
     if (typeof args === 'string') args = args.split(' ');
 
+    if (settings.loglevel) {
+      args.unshift('--log-level', 'debug');
+    }
+
     execString += ` ${shellEscape(args)}`;
 
     if (options.verbose || settings.verbose) {
-      console.log(execString);
+      console.log('Executing:', execString);
     }
-    childProcess.exec(execString, (err, stdout, stderr) => {
+    childProcess.exec(execString, { env }, (err, stdout, stderr) => {
       const output = outputInStderr ? stderr : stdout;
       callback(err, {
         parsed: outputParsers[command] && output ? outputParsers[command](output) : output,
         stdout,
         stderr,
-      })});
+      });
+    });
   };
 };
