@@ -6,6 +6,9 @@
   "scripts": {
     "test": "node ./test/index.js"
   },
+  "engines": {
+    "node": ">8.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://bitbucket.org/hopkinsdeeplearning/dcmtk-node.git"

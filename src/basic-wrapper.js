@@ -4,7 +4,7 @@ const outputParsers = require('./output-parsers');
 const path = require('path');
 
 module.exports = (_options) => {
-  const { command, platform, settings } = _options;
+  const { command, platform, settings, outputInStderr } = _options;
 
   const binaryString = path.join(platform.binaryPath, command);
   let execString = `${binaryString}`;
@@ -15,17 +15,25 @@ module.exports = (_options) => {
       options = {};
     }
 
-    const { args } = options;
+    if (!callback) {
+      throw new Error('Callback function required');
+    }
+
+    let { args } = options;
     if (!args) args = [];
+    if (typeof args === 'string') args = args.split(' ');
 
     execString += ` ${shellEscape(args)}`;
 
     if (options.verbose || settings.verbose) {
       console.log(execString);
     }
-    childProcess.exec(execString, (err, stdout, stderr) => callback(err, {
-      parsed: outputParsers[command] && stdout ? outputParsers[command](stdout) : stdout,
-      stdout,
-      stderr }));
+    childProcess.exec(execString, (err, stdout, stderr) => {
+      const output = outputInStderr ? stderr : stdout;
+      callback(err, {
+        parsed: outputParsers[command] && output ? outputParsers[command](output) : output,
+        stdout,
+        stderr,
+      })});
   };
 };
