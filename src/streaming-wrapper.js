@@ -1,5 +1,4 @@
-const childProcess = require('child_process');
-// const shellEscape = require('shell-escape');
+const spawn = require('cross-spawn');
 const outputParsers = require('./output-parsers');
 const path = require('path');
 
@@ -24,7 +23,7 @@ module.exports = (_options) => {
     if (options.verbose || settings.verbose) {
       console.log('Executing:', [execString].concat(args).join(' '));
     }
-    const child = childProcess.spawn(execString, args, { env });
+    const child = spawn(execString, args, { env });
 
     if (outputParsers[command]) {
       child.parsed = {

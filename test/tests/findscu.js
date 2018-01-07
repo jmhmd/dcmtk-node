@@ -1,10 +1,10 @@
 const dcmtk = require('../../')({ verbose: true });
 
 /* Test callback error */
-dcmtk.findscu({
-  args:
-    '--study -k QueryRetrieveLevel="STUDY" -aet Pacsbin --call Horos -k PatientID -k PatientName --verbose --cancel 10 localhost 4444',
-});
+// dcmtk.findscu({
+//   args:
+//     '--study -k QueryRetrieveLevel="STUDY" -aet Pacsbin --call Horos -k PatientID -k PatientName --verbose --cancel 10 localhost 4444',
+// });
 
 /* Test findscu */
 
@@ -12,7 +12,7 @@ dcmtk.findscu({
 dcmtk.findscu(
   {
     args:
-      '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k PatientID=fake-patient-id -k PatientName --verbose --cancel 10 localhost 4444',
+      '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k PatientID=fake-patient-id -k PatientName --cancel 10 localhost 4444',
   },
   (err, output) => {
     console.log('ERR:', err);
@@ -25,7 +25,7 @@ dcmtk.findscu(
 dcmtk.findscu(
   {
     args:
-      '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k PatientID -k PatientName -k AccessionNumber --verbose --cancel 10 localhost 4444',
+      '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k PatientID -k PatientName -k AccessionNumber --cancel 10 localhost 4444',
   },
   (err, output) => {
     console.log('ERR:', err);
@@ -38,7 +38,7 @@ dcmtk.findscu(
 dcmtk.findscu(
   {
     args:
-      '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k PatientID=doesnt-exist -k PatientName --verbose --cancel 10 localhost 4444',
+      '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k PatientID=doesnt-exist -k PatientName --cancel 10 localhost 4444',
   },
   (err, output) => {
     console.log('ERR:', err);
