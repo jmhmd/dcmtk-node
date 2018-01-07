@@ -9,11 +9,11 @@ module.exports = (_options) => {
   } = _options;
 
   const binaryString = path.join(platform.binaryPath, command);
-  let execString = `${binaryString}`;
 
   return function basicWrapper(_options2, _callback) {
     let callback = _callback;
     let options = _options2;
+    let execString = `${binaryString}`;
     const env = settings.env || {};
 
     if (!callback && typeof options === 'function') {

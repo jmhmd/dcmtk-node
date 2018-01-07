@@ -9,7 +9,6 @@ const DCMDICTPATH = path.join(platform.binaryPath, '..', 'share', 'dcmtk', 'dico
 
 module.exports = (settings = {}) => {
   Object.assign(settings, {
-    verbose: true,
     loglevel: 'info',
     env: {
       DCMDICTPATH,
