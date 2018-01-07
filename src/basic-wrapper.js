@@ -35,6 +35,7 @@ module.exports = (_options) => {
     if (options.verbose || settings.verbose) {
       console.log('Executing:', binaryString, args.join(' '));
     }
+
     const child = spawn(binaryString, args, { env });
     let stdout = '';
     let stderr = '';
