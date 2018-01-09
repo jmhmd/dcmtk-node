@@ -1,7 +1,5 @@
 module.exports = {
   hasTag: /^\s*\([0-9A-Za-z]+,[0-9A-Za-z]+\)/,
-  isResponseLine: /^W:/,
-  isInfoLine: /^I:/,
   matchResponseNumber: /Find Response: ([0-9]+)/,
   matchTransferSyntax: /# Used TransferSyntax: ([a-zA-Z ]+)/,
   dimseStatus: /DIMSE Status +: (.+)$/,

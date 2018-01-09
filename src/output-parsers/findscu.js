@@ -6,17 +6,13 @@ module.exports = function findscu(output) {
   let multiLine;
   const lines = output.split(/\r?\n/);
 
-  // get all the lines that represent actual find results
-  const responseLines = lines.filter(l => regexes.isResponseLine.test(l));
-  // get all the lines that represent query info
-  const infoLines = lines.filter(l => regexes.isInfoLine.test(l));
-
   /**
    * Parse response lines
    */
   response.results = [];
   let currentItem;
-  responseLines.forEach((line) => {
+  lines.forEach((line) => {
+    // match result beginning line
     if (regexes.matchResponseNumber.test(line)) {
       // start new item
       const [, responseNumber] = regexes.matchResponseNumber.exec(line);
@@ -25,12 +21,15 @@ module.exports = function findscu(output) {
       return true;
     }
 
+    // wait until we have found a result beginning line
+    if (!currentItem) return true;
+
     if (regexes.matchTransferSyntax.test(line)) {
       [, currentItem.transferSyntax] = regexes.matchTransferSyntax.exec(line);
       return true;
     }
 
-    // check if matched complete line
+    // check if matches complete dicom header line
     const header = parseDicomHeaderLine(line);
 
     // if complete line, add header and handle prior multiline if present
@@ -66,19 +65,6 @@ module.exports = function findscu(output) {
       multiLine = undefined;
     }
   }
-
-  /**
-   * Parse query info lines
-   */
-  infoLines.forEach((line) => {
-    if (!line) return true;
-
-    if (regexes.dimseStatus.test(line)) {
-      [, response.dimseStatus] = regexes.dimseStatus.exec(line);
-    }
-
-    return true;
-  });
 
   return response;
 };
