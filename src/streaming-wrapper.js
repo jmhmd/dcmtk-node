@@ -14,10 +14,13 @@ module.exports = (_options) => {
 
     let { args } = options;
     if (!args) args = [];
-    if (typeof args === 'string') args = args.split(' ');
+    if (!Array.isArray(args)) {
+      return new Error('Parameter "args" must be array of strings');
+    }
 
-    if (settings.loglevel) {
-      args.unshift('--log-level', settings.loglevel);
+    if (options.loglevel || settings.loglevel) {
+      const loglevel = options.loglevel || settings.loglevel;
+      args.unshift('--log-level', loglevel);
     }
 
     if (options.verbose || settings.verbose) {
@@ -31,6 +34,8 @@ module.exports = (_options) => {
         stdout: outputParsers[command](child.stdout, 'stdout'),
       };
     }
+
+    process.on('exit', () => child.kill());
 
     return child;
   };

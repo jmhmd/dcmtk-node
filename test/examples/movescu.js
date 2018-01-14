@@ -5,8 +5,25 @@ const split2 = require('split2');
  * Test movescu command. Storescp server must be running
  */
 const movescu = dcmtk.movescu({
-  args:
-    '--study -k QueryRetrieveLevel=STUDY -aet Pacsbin --call Horos -k AccessionNumber=11250670 -k PatientID -k PatientName --move Pacsbin localhost 4444',
+  args: [
+    '--study',
+    '-k',
+    'QueryRetrieveLevel=STUDY',
+    '-aet',
+    'Pacsbin',
+    '--call',
+    'Horos',
+    '-k',
+    'AccessionNumber=11250670',
+    '-k',
+    'PatientID',
+    '-k',
+    'PatientName',
+    '--move',
+    'Pacsbin',
+    'localhost',
+    '4444',
+  ],
 });
 
 movescu.on('close', (code, signal) => {

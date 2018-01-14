@@ -25,6 +25,14 @@ module.exports = (settings = {}) => {
         });
         break;
 
+      case 'dcmqrscp':
+        wrapper = streamingWrapper({
+          command,
+          platform,
+          settings,
+        });
+        break;
+
       case 'movescu':
         wrapper = streamingWrapper({
           command,
@@ -50,6 +58,8 @@ module.exports = (settings = {}) => {
     echoscu: getWrapper('echoscu', { outputInStderr: true }),
     findscu: getWrapper('findscu', { outputInStderr: true }),
     storescp: getWrapper('storescp'),
+    dcmqrscp: getWrapper('dcmqrscp'),
     movescu: getWrapper('movescu'),
+    dcmqridx: getWrapper('dcmqridx'),
   };
 };

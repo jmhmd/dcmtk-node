@@ -7,8 +7,8 @@ const path = require('path');
 dcmtk.dcmdump(
   {
     args: [
-      path.join(__dirname, '../dicom/minimal/space in path/01.dcm'),
-      // path.join(__dirname, 'dicom/minimal/first/notvalid'),
+      path.join(__dirname, '../data/dicom-input/space in path/01.dcm'),
+      // path.join(__dirname, 'dicom/first/notvalid'),
     ],
   },
   (err, output) => {
@@ -26,7 +26,7 @@ return;
 dcmtk.dcmdump(
   {
     args: [
-      path.join(__dirname, '../dicom/minimal/first/notvalid'),
+      path.join(__dirname, '../dicom/first/notvalid'),
     ],
   },
   (err, output) => {

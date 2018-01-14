@@ -4,7 +4,7 @@
   "description": "Node wrapper for OFFIS DCMTK DICOM library",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/index.js"
+    "test": "jest"
   },
   "engines": {
     "node": ">8.0"
@@ -21,8 +21,11 @@
     "split2": "^2.2.0"
   },
   "devDependencies": {
+    "async": "^2.6.0",
     "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "fs-extra": "^5.0.0",
+    "jest": "^22.0.6"
   }
 }

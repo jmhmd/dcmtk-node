@@ -2,13 +2,22 @@ const dcmtk = require('../../')();
 const split2 = require('split2');
 const path = require('path');
 
-const outputdir = path.join(__dirname, '../movescu');
+const outputdir = path.join(__dirname, '../data/output');
 
 /**
  * Start storescp server and log output
  */
 const storescp = dcmtk.storescp({
-  args: `-od ${outputdir} -su PB -aet Pacsbin --sleep-after 0 --abort-during --fork 4242`,
+  args: [
+    '-od',
+    outputdir,
+    '-su',
+    'PB',
+    '-aet',
+    'Pacsbin',
+    '--fork',
+    '4242',
+  ],
 });
 
 storescp.on('close', (code, signal) => {

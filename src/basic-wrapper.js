@@ -26,7 +26,9 @@ module.exports = (_options) => {
 
     let { args } = options;
     if (!args) args = [];
-    if (typeof args === 'string') args = args.split(' ');
+    if (!Array.isArray(args)) {
+      return callback('Parameter "args" must be array of strings');
+    }
 
     if (settings.loglevel) {
       args.unshift('--log-level', settings.loglevel);
@@ -54,11 +56,12 @@ module.exports = (_options) => {
         console.log('Process closed with code:', code);
       }
       const output = outputInStderr ? stderr : stdout;
-      callback(null, {
+      return callback(null, {
         parsed: outputParsers[command] && output ? outputParsers[command](output) : output,
         stdout,
         stderr,
       });
     });
+    return true;
   };
 };
