@@ -1,9 +1,12 @@
 const { storescp } = require('../../')();
 const { onListenerUp } = require('./util');
+const fs = require('fs-extra');
 const path = require('path');
 
 let storeServer;
 const localOutputDir = path.join(__dirname, '../data/output');
+
+beforeAll(() => fs.ensureDir(localOutputDir));
 
 afterAll((done) => {
   storeServer.kill();
