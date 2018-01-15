@@ -20,7 +20,7 @@ const spike = async () => {
     await access(indexPath);
     await unlink(indexPath);
   } catch (e) {
-    console.log('No index to delete');
+    // console.log('No index to delete');
   }
 
   // create new index and preload with a few images
@@ -55,7 +55,7 @@ const start = async (cb) => {
       });
 
       child.on('close', (code, signal) => {
-        console.log(`Closed dcmqrscp server with code ${code} and signal ${signal}`);
+        // console.log(`Closed dcmqrscp server with code ${code} and signal ${signal}`);
       });
 
       child.on('error', (err) => {

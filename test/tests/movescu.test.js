@@ -60,9 +60,9 @@ test('moves a series of images from pacs to local', (done) => {
   mover.on('close', async (code, signal) => {
     // console.log(`Closed movescu with code ${code} and signal ${signal}`);
 
-    expect(await fs.pathExists('test/data/output/PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.1563480613904460876041307875247925092')).toBe(true);
-    expect(await fs.pathExists('test/data/output/PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.3086950219072753190511793613081870134')).toBe(true);
-    expect(await fs.pathExists('test/data/output/PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.4391742151522474134629769548169430042')).toBe(true);
+    expect(await fs.pathExists(path.join(localOutputDir, 'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.1563480613904460876041307875247925092'))).toBe(true);
+    expect(await fs.pathExists(path.join(localOutputDir, 'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.3086950219072753190511793613081870134'))).toBe(true);
+    expect(await fs.pathExists(path.join(localOutputDir, 'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.4391742151522474134629769548169430042'))).toBe(true);
     done();
   });
 
