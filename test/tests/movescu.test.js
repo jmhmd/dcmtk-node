@@ -8,6 +8,8 @@ let storeServer;
 const localOutputDir = path.join(__dirname, '../data/output');
 
 beforeAll(async (done) => {
+  await fs.ensureDir(localOutputDir);
+
   // start storescp server
   storeServer = storescp({
     args: ['-od', localOutputDir, '-su', 'PB', '-aet', 'TEST', '--fork', '4242'],
