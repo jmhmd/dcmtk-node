@@ -9,14 +9,7 @@ const outputdir = path.join(__dirname, '../data/output');
  */
 const storescp = dcmtk.storescp({
   args: [
-    '-od',
-    outputdir,
-    '-su',
-    'PB',
-    '-aet',
-    'Pacsbin',
-    '--fork',
-    '4242',
+    '-od', outputdir, '-su', 'PB', '-aet', 'TEST', '--fork', '4242'
   ],
 });
 

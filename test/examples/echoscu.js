@@ -5,7 +5,7 @@ const dcmtk = require('../../')({ verbose: true });
  */
 dcmtk.echoscu(
   {
-    args: ['localhost', '4444'],
+    args: ['-aet', 'TEST', '-aec', 'TEST', 'localhost', '4242'],
   },
   (err, output) => {
     console.log('ERR:', err);

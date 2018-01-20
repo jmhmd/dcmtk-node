@@ -15,6 +15,13 @@ module.exports = (settings = {}) => {
     },
   });
   function getWrapper(command, options) {
+
+    // It seems that on windows all output goes to stdout while on macOS, output of some
+    // tools goes to stderr. This has not been thoroughly tested.
+    if (options && platform.platform.indexOf('win') === 0) {
+      options.outputInStderr = false;
+    }
+    
     let wrapper;
     switch (command) {
       case 'storescp':

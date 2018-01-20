@@ -1,6 +1,10 @@
 const spawn = require('cross-spawn');
 const outputParsers = require('./output-parsers');
 const path = require('path');
+const split2 = require('split2');
+const regexes = require('./output-parsers/regexes');
+
+const logLength = 100;
 
 module.exports = (_options) => {
   const { command, platform, settings } = _options;
@@ -11,6 +15,7 @@ module.exports = (_options) => {
     const options = _options2;
     const execString = binaryString;
     const env = settings.env || {};
+    const errLog = [];
 
     let { args } = options;
     if (!args) args = [];
@@ -34,6 +39,25 @@ module.exports = (_options) => {
         stdout: outputParsers[command](child.stdout, 'stdout'),
       };
     }
+
+    function handleErrors(line) {
+      if (regexes.errorRegex.test(line)) {
+        if (errLog.length > logLength) {
+          errLog.shift();
+        }
+        errLog.push(line);
+      }
+    }
+
+    // keep fixed length recent log to find error messages if needed
+    child.stdout.pipe(split2()).on('data', handleErrors);
+    child.stderr.pipe(split2()).on('data', handleErrors);
+
+    child.on('close', (code, signal) => {
+      if (code !== 0) {
+        child.emit('error', new Error(errLog));
+      }
+    });
 
     process.on('exit', () => child.kill());
 

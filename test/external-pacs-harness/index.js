@@ -64,6 +64,9 @@ const start = async (cb) => {
 
       child.stdout.pipe(split2()).on('data', (data) => {
         // console.log(`STDOUT: ${data}`);
+        if (/D: $/.test(data)) {
+          resolve(null);
+        }
       });
 
       child.stderr.pipe(split2()).on('data', (data) => {

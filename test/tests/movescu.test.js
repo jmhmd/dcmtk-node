@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 
 let storeServer;
+const storeServerPort = '4002';
 const localOutputDir = path.join(__dirname, '../data/output');
 
 beforeAll(async (done) => {
@@ -12,7 +13,7 @@ beforeAll(async (done) => {
 
   // start storescp server
   storeServer = storescp({
-    args: ['-od', localOutputDir, '-su', 'PB', '-aet', 'TEST', '--fork', '4242'],
+    args: ['-od', localOutputDir, '-su', 'PB', '-aet', 'TESTLISTENER', '--fork', storeServerPort],
   });
   storeServer.on('close', (code, signal) => {
     // console.log(`Closed storescu server with code ${code} and signal ${signal}`);
@@ -21,7 +22,7 @@ beforeAll(async (done) => {
     console.log(`Error on storescu server: ${err}`);
   });
 
-  await onListenerUp('4242');
+  await onListenerUp(storeServerPort);
   await harness.start();
   await fs.emptyDir(localOutputDir);
   done();
