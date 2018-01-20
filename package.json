@@ -4,7 +4,7 @@
   "description": "Node wrapper for OFFIS DCMTK DICOM library",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "engines": {
     "node": ">8.0"

@@ -19,7 +19,7 @@ beforeAll(async (done) => {
     // console.log(`Closed storescu server with code ${code} and signal ${signal}`);
   });
   storeServer.on('error', (err) => {
-    console.log(`Error on storescu server: ${err}`);
+    console.log('Error on storescu server:', err);
   });
 
   await onListenerUp(storeServerPort);
@@ -29,8 +29,11 @@ beforeAll(async (done) => {
 });
 
 afterAll(async (done) => {
-  harness.stop();
-  storeServer.kill();
+  await harness.stop();
+  await new Promise((resolve) => {
+    storeServer.on('close', resolve);
+    storeServer.kill();
+  });
   await fs.emptyDir(localOutputDir);
   done();
 });
@@ -61,9 +64,18 @@ test('moves a series of images from pacs to local', (done) => {
   mover.on('close', async (code, signal) => {
     // console.log(`Closed movescu with code ${code} and signal ${signal}`);
 
-    expect(await fs.pathExists(path.join(localOutputDir, 'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.1563480613904460876041307875247925092'))).toBe(true);
-    expect(await fs.pathExists(path.join(localOutputDir, 'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.3086950219072753190511793613081870134'))).toBe(true);
-    expect(await fs.pathExists(path.join(localOutputDir, 'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.4391742151522474134629769548169430042'))).toBe(true);
+    expect(await fs.pathExists(path.join(
+      localOutputDir,
+      'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.1563480613904460876041307875247925092',
+    ))).toBe(true);
+    expect(await fs.pathExists(path.join(
+      localOutputDir,
+      'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.3086950219072753190511793613081870134',
+    ))).toBe(true);
+    expect(await fs.pathExists(path.join(
+      localOutputDir,
+      'PB_2.25.5118880879501548101496826410298115715314/CT.1.2.826.0.1.3680043.2.1143.4391742151522474134629769548169430042',
+    ))).toBe(true);
     done();
   });
 

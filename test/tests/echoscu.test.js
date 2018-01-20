@@ -5,9 +5,7 @@ beforeAll((done) => {
   harness.start(done);
 });
 
-afterAll(() => {
-  harness.stop();
-});
+afterAll(() => harness.stop());
 
 test('send echo to pacs server', (done) => {
   echoscu(

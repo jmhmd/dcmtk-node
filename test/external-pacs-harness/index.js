@@ -59,7 +59,7 @@ const start = async (cb) => {
       });
 
       child.on('error', (err) => {
-        console.log(`Error on dcmqrscp server: ${err}`);
+        console.log('Error on dcmqrscp server:', err);
       });
 
       child.stdout.pipe(split2()).on('data', (data) => {
@@ -87,9 +87,13 @@ const start = async (cb) => {
   return p;
 };
 
-const stop = () => {
-  child.kill();
-};
+const stop = () => new Promise((resolve) => {
+  if (!child) return resolve();
+  child.on('close', () => {
+    resolve();
+  });
+  return child.kill();
+});
 
 module.exports = {
   start,

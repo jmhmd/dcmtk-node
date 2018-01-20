@@ -56,13 +56,15 @@ module.exports = (_options) => {
       if (options.verbose || settings.verbose) {
         console.log('Process closed with code:', code);
       }
-      if (code !== 0) {
+      if (code && code !== 0) {
         // find any error messages in stdout or stderr -- should be lines beginning
         // with 'E: ...' or 'F: ...'
         let err = '';
         const lines = stdout.split(/\r?\n/).concat(stderr.split(/\r?\n/));
-        lines.forEach(l => { if (regexes.errorRegex.test(l)) err += `${l}\n`; });
-        return callback(err || `Unknown error\nSTDOUT: ${stdout}\nSTDERR: ${stderr}`);
+        lines.forEach((l) => {
+          if (regexes.errorRegex.test(l)) err += `${l}\n`;
+        });
+        return callback(err.length ? err : `Unknown error\nSTDOUT: ${stdout}\nSTDERR: ${stderr}`);
       }
       const output = outputInStderr ? stderr : stdout;
       return callback(null, {

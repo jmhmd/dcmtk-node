@@ -54,8 +54,8 @@ module.exports = (_options) => {
     child.stderr.pipe(split2()).on('data', handleErrors);
 
     child.on('close', (code, signal) => {
-      if (code !== 0) {
-        child.emit('error', new Error(errLog));
+      if (code && code !== 0) {
+        child.emit('error', new Error(errLog.length ? errLog : 'Unknown error'));
       }
     });
 
