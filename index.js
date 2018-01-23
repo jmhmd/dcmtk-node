@@ -14,14 +14,15 @@ module.exports = (settings = {}) => {
       DCMDICTPATH,
     },
   });
-  function getWrapper(command, options) {
+  function getWrapper(command, _options) {
+    const options = _options;
 
     // It seems that on windows all output goes to stdout while on macOS, output of some
     // tools goes to stderr. This has not been thoroughly tested.
     if (options && platform.platform.indexOf('win') === 0) {
       options.outputInStderr = false;
     }
-    
+
     let wrapper;
     switch (command) {
       case 'storescp':
@@ -68,5 +69,6 @@ module.exports = (settings = {}) => {
     dcmqrscp: getWrapper('dcmqrscp'),
     movescu: getWrapper('movescu'),
     dcmqridx: getWrapper('dcmqridx'),
+    dcmconv: getWrapper('dcmconv'),
   };
 };
