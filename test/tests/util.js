@@ -6,8 +6,8 @@ function pingListener(port, callback) {
       args: ['localhost', port],
     },
     (err, output) => {
-      callback(err, output.parsed.accepted)
-    }
+      callback(err, output && output.parsed && output.parsed.accepted);
+    },
   );
 }
 
