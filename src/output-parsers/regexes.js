@@ -3,5 +3,5 @@ module.exports = {
   matchResponseNumber: /Find Response: ([0-9]+)/,
   matchTransferSyntax: /# Used TransferSyntax: ([a-zA-Z ]+)/,
   dimseStatus: /DIMSE Status +: (.+)$/,
-  errorRegex: /^E: |^F: /,
+  errorRegex: /^E: |^F: |^error: /,
 };
