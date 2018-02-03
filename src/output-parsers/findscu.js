@@ -4,6 +4,9 @@ const regexes = require('./regexes');
 module.exports = function findscu(output) {
   const response = {};
   let multiLine;
+  // remove any null bytes
+  output = output.replace(regexes.nullByte, '');
+  // split on newlines
   const lines = output.split(/\r?\n/);
 
   /**
