@@ -4,4 +4,5 @@ module.exports = {
   matchTransferSyntax: /# Used TransferSyntax: ([a-zA-Z ]+)/,
   dimseStatus: /DIMSE Status +: (.+)$/,
   errorRegex: /^E: |^F: |^error: /,
+  nullByte: /\0/g,
 };

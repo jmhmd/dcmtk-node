@@ -7,6 +7,18 @@ const dcmtk = require('../../')({ verbose: true });
 // });
 
 /* Test findscu */
+dcmtk.findscu(
+  {
+    args:
+      ['--study', '-k', 'QueryRetrieveLevel=STUDY', '-aet', 'DEEPLEARN', '--call', 'ORTHANC', '-k', 'PatientID', '-k', 'PatientName', '-k', 'AccessionNumber=7777777', '-k', 'StudyInstanceUID', '--cancel', '10', 'localhost', '4242'],
+  },
+  (err, output) => {
+    console.log('ERR:', err);
+    console.log('OUT:', output);
+    console.log('RESULTS:', output.parsed.results);
+  },
+);
+return;
 
 dcmtk.findscu(
   {
