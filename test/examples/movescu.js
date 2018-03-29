@@ -6,6 +6,8 @@ const split2 = require('split2');
  */
 const movescu = dcmtk.movescu({
   args: [
+    '--log-level',
+    'debug',
     '--study',
     '-k',
     'QueryRetrieveLevel=STUDY',
@@ -22,8 +24,9 @@ const movescu = dcmtk.movescu({
     '--move',
     'TESTLISTENER',
     'localhost',
-    '4141',
+    '4242',
   ],
+  verbose: true,
 });
 
 movescu.on('close', (code, signal) => {

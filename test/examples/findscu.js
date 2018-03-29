@@ -8,6 +8,36 @@ const dcmtk = require('../../')({ verbose: true });
 
 /* Test findscu */
 
+dcmtk.findscu(
+  {
+    args: [
+      '--study',
+      '-k',
+      'QueryRetrieveLevel=STUDY',
+      '-aet',
+      'Pacsbin',
+      '-aec',
+      'Horos',
+      '-k',
+      'AccessionNumber=21254202',
+      '-k',
+      'PatientName',
+      '-k',
+      'ModalitiesInStudy', // STUDY level only
+      '-k',
+      '(0020,1208)',
+      '-k',
+      'StudyInstanceUID=1.2.840.114350.2.331.2.798268.2.27600021.1',
+      'localhost',
+      '4444',
+    ],
+  },
+  (err, output) => {
+    console.log(output.stderr);
+  },
+);
+return;
+
 // find one patient
 dcmtk.findscu(
   {
