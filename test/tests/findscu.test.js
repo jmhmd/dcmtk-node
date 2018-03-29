@@ -35,6 +35,36 @@ test('finds patient with Accession match', (done) => {
   );
 });
 
+test('finds patient with Accession match and gets Modality', (done) => {
+  findscu(
+    {
+      args: [
+        '--study',
+        '-k',
+        'QueryRetrieveLevel=STUDY',
+        '-aet',
+        'NONE',
+        '-aec',
+        'TEST',
+        '-k',
+        'AccessionNumber=7777777',
+        '-k',
+        'PatientName',
+        '-k',
+        'Modality',
+        'localhost',
+        '4141',
+      ],
+    },
+    (err, output) => {
+      expect(err).toBe(null);
+      expect(output.parsed.results.length).toBe(1);
+      expect(output.parsed.results[0]['0008,0060'].value.trim()).toBe('CT');
+      done();
+    },
+  );
+});
+
 test('finds patient with partial patient name match', (done) => {
   findscu(
     {
