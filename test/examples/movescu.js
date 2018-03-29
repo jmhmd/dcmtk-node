@@ -24,7 +24,7 @@ const movescu = dcmtk.movescu({
     '--move',
     'TESTLISTENER',
     'localhost',
-    '4242',
+    '4141',
   ],
   verbose: true,
 });

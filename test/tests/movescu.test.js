@@ -39,6 +39,8 @@ afterAll(async (done) => {
 });
 
 test('moves a series of images from pacs to local', (done) => {
+  const responses = [];
+
   const mover = movescu({
     args: [
       '--study',
@@ -61,8 +63,14 @@ test('moves a series of images from pacs to local', (done) => {
     ],
   });
 
+  mover.parsed.stderr.on('response', (response) => {
+    responses.push(response);
+  });
+
   mover.on('close', async (code, signal) => {
     // console.log(`Closed movescu with code ${code} and signal ${signal}`);
+
+    expect(responses.length).toBe(4);
 
     expect(await fs.pathExists(path.join(
       localOutputDir,
