@@ -15,7 +15,7 @@ test('finds patient with Accession match', (done) => {
         '-k',
         'QueryRetrieveLevel=STUDY',
         '-aet',
-        'NONE',
+        'TESTLISTENER',
         '-aec',
         'TEST',
         '-k',
@@ -43,7 +43,7 @@ test('finds patient with Accession match and gets Modality', (done) => {
         '-k',
         'QueryRetrieveLevel=STUDY',
         '-aet',
-        'NONE',
+        'TESTLISTENER',
         '-aec',
         'TEST',
         '-k',
@@ -73,7 +73,7 @@ test('finds patient with partial patient name match', (done) => {
         '-k',
         'QueryRetrieveLevel=STUDY',
         '-aet',
-        'NONE',
+        'TESTLISTENER',
         '-aec',
         'TEST',
         '-k',
@@ -97,7 +97,7 @@ test('fails on string arguments', (done) => {
   findscu(
     {
       args:
-        '--study -k QueryRetrieveLevel=STUDY -aet NONE -aec TEST -k AccessionNumber -k PatientName=Anon Holy* localhost 4141',
+        '--study -k QueryRetrieveLevel=STUDY -aet TESTLISTENER -aec TEST -k AccessionNumber -k PatientName=Anon Holy* localhost 4141',
     },
     (err, output) => {
       expect(err).toBe('Parameter "args" must be array of strings');
