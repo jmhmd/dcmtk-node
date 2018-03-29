@@ -47,7 +47,9 @@ module.exports = function movescu(stream, outputType) {
     }
 
     if (regexes.responseEnd.test(line)) {
-      emitter.emit('response', currentResponse);
+      if (currentResponse) {
+        emitter.emit('response', currentResponse);
+      }
       currentResponse = undefined;
       return true;
     }
