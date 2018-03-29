@@ -27,6 +27,8 @@ test('finds patient with Accession match', (done) => {
       ],
     },
     (err, output) => {
+      console.log(output.parsed);
+      console.log(output.stderr);
       expect(err).toBe(null);
       expect(output.parsed.results.length).toBe(1);
       expect(output.parsed.results[0]['0008,0050'].value.trim()).toBe('7777777');
