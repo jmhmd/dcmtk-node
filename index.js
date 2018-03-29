@@ -42,11 +42,10 @@ module.exports = (settings = {}) => {
         break;
 
       case 'movescu':
-        Object.assign({}, settings, { loglevel: 'debug' });
         wrapper = streamingWrapper({
           command,
           platform,
-          settings,
+          settings: Object.assign({}, settings, { loglevel: 'debug' }),
         });
         break;
 
