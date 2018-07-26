@@ -5,13 +5,11 @@ const streamingWrapper = require('./src/streaming-wrapper');
 
 const platform = checkPlatform();
 
-const DCMDICTPATH = path.join(platform.binaryPath, '..', 'share', 'dcmtk', 'dicom.dic');
-
 module.exports = (settings = {}) => {
   Object.assign(settings, {
     loglevel: 'info',
     env: {
-      DCMDICTPATH,
+      DCMDICTPATH: platform.DCMDICTPATH,
     },
   });
   function getWrapper(command, _options) {
@@ -70,5 +68,6 @@ module.exports = (settings = {}) => {
     movescu: getWrapper('movescu'),
     dcmqridx: getWrapper('dcmqridx'),
     dcmconv: getWrapper('dcmconv'),
+    platform,
   };
 };
