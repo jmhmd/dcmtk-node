@@ -67,6 +67,10 @@ test('moves a series of images from pacs to local', (done) => {
     responses.push(response);
   });
 
+  mover.parsed.stdout.on('response', (response) => {
+    responses.push(response);
+  });
+
   mover.on('close', async (code, signal) => {
     // console.log(`Closed movescu with code ${code} and signal ${signal}`);
 

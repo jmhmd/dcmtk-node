@@ -6,6 +6,12 @@
   "scripts": {
     "test": "jest --runInBand"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules"
+    ]
+  },
   "engines": {
     "node": ">8.0"
   },
