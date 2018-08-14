@@ -71,10 +71,15 @@ test('dumps a directory of mixed files and appropriately handles errored files',
     (err, output) => {
       expect(err).toBeFalsy();
       expect(Array.isArray(output.parsed)).toBe(true);
-      expect(output.parsed[0].parsed['0008,0022'].value).toBe('20150513');
-      expect(output.parsed[0].parsed['0008,0050'].value).toBe('b72779a5-bb3e-414e-b75d-584c52e25db6');
-      expect(Object.keys(output.parsed[1].parsed).length).toBe(0);
-      expect(output.parsed[1].errors.length).toBeGreaterThan(0);
+      const errored = output.parsed.find(f => f.filePath.includes('non-dicom.txt'));
+      const parsedFile = output.parsed.find(f => f.filePath.includes('01.dcm'));
+      expect(errored).toBeTruthy();
+      expect(parsedFile).toBeTruthy();
+      expect(parsedFile.parsed['0008,0022'].value).toBe('20150513');
+      expect(parsedFile.parsed['0008,0050'].value).toBe('b72779a5-bb3e-414e-b75d-584c52e25db6');
+      expect(parsedFile.errors).toBeFalsy();
+      expect(Object.keys(errored.parsed).length).toBe(0);
+      expect(errored.errors.length).toBeGreaterThan(0);
       done();
     },
   );
