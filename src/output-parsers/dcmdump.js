@@ -1,7 +1,7 @@
 const parseDicomHeaderLine = require('./dicom-header-line');
 const regexes = require('./regexes');
 
-module.exports = function dcmdump(output) {
+function parseFileDumpBlock(output) {
   const response = {};
   let multiLine;
   const lines = output.split(/\r?\n/);
@@ -44,4 +44,35 @@ module.exports = function dcmdump(output) {
   }
 
   return response;
+}
+
+function splitByFile(output) {
+  // split output into blocks of lines by filename
+  const fileSplitRegex = /^# dcmdump \(([0-9]+)\/([0-9]+)\): (.+)$/gm;
+  const lines = output.split(fileSplitRegex).filter(Boolean); // split output by capture groups
+  const chunks = [];
+  const size = 4;
+  // split result array by file (4 capture groups per file)
+  while (lines.length > 0) chunks.push(lines.splice(0, size));
+  const fileDumps = chunks.map((chunk) => {
+    // check for parsing errors for the file
+    let errors = chunk[3].match(regexes.captureErrors);
+    if (errors) errors = errors.filter(Boolean);
+    return {
+      fileNumber: chunk[0],
+      totalFilesDumped: chunk[1],
+      filePath: chunk[2],
+      raw: chunk[3],
+      parsed: errors && errors.length > 0 ? {} : parseFileDumpBlock(chunk[3]),
+      errors,
+    };
+  });
+  return fileDumps;
+}
+
+module.exports = function dcmdump(output, args) {
+  if (args.includes('--print-filename') || args.includes('+F')) {
+    return splitByFile(output);
+  }
+  return parseFileDumpBlock(output);
 };

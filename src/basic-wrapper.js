@@ -35,6 +35,14 @@ module.exports = (_options) => {
       args.unshift('--log-level', settings.loglevel);
     }
 
+    // If we are scanning a directory (i.e. dumping multiple files at once), then include a flag to
+    // print the dumped filename ahead of each result so we can parse them appropriately
+    if (args.includes('--scan-directories') || args.includes('+sd')) {
+      if (!(args.includes('--print-filename') || args.includes('+F'))) {
+        args.unshift('--print-filename');
+      }
+    }
+
     if (options.verbose || settings.verbose) {
       console.log('Executing:', binaryString, args.join(' '));
     }
@@ -42,6 +50,7 @@ module.exports = (_options) => {
     const child = spawn(binaryString, args, { env });
     let stdout = '';
     let stderr = '';
+    let combined = '';
 
     /**
      * Spawn will return a stream, but we want to just collect all the data and return it
@@ -49,26 +58,40 @@ module.exports = (_options) => {
      * might take a while and have periodic updates (moving files, etc), use streaming-wrapper.
      */
     /* eslint no-return-assign: ["error", "except-parens"] */
-    child.stdout.on('data', data => (stdout += data));
-    child.stderr.on('data', data => (stderr += data));
+    child.stdout.on('data', (data) => {
+      stdout += data;
+      combined += data;
+    });
+    child.stderr.on('data', (data) => {
+      stderr += data;
+      combined += data;
+    });
     child.on('error', callback);
     child.on('close', (code) => {
       if (options.verbose || settings.verbose) {
         console.log('Process closed with code:', code);
       }
-      if (code && code !== 0) {
+
+      // Only return without parsing if exit code is non-zero AND we haven't set the
+      // --scan-directories flag. --scan-directories with dcmdump will return a non-zero exit code
+      // if corrputed or non-dicom files are encountered, but we want to go ahead and process this
+      // output
+      if (code && code !== 0 && !args.includes('--scan-directories') && !args.includes('+sd')) {
         // find any error messages in stdout or stderr -- should be lines beginning
         // with 'E: ...' or 'F: ...'
         let err = '';
-        const lines = stdout.split(/\r?\n/).concat(stderr.split(/\r?\n/));
+        const lines = combined.split(/\r?\n/);
         lines.forEach((l) => {
           if (regexes.errorRegex.test(l)) err += `${l}\n`;
         });
         return callback(err.length ? err : `Unknown error\nSTDOUT: ${stdout}\nSTDERR: ${stderr}`);
       }
-      const output = outputInStderr ? stderr : stdout;
+
+      // Pass the combined stdout and stderr output to the parser, as sometimes the errors are
+      // useful in determining what happened to a given file or block of output
       return callback(null, {
-        parsed: outputParsers[command] && output ? outputParsers[command](output) : output,
+        parsed:
+          outputParsers[command] && combined ? outputParsers[command](combined, args) : combined,
         stdout,
         stderr,
       });
