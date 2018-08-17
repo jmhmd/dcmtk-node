@@ -27,6 +27,7 @@ module.exports = () => {
   return {
     platform,
     DCMDICTPATH,
+    BINARIES,
     binaryPath,
   };
 };
