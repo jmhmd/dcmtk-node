@@ -54,7 +54,7 @@ const start = async (cb) => {
         loglevel: 'debug',
       });
 
-      child.on('close', (code, signal) => {
+      child.on('close', (code) => {
         // console.log(`Closed dcmqrscp server with code ${code} and signal ${signal}`);
       });
 

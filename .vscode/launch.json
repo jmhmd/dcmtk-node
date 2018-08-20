@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Test",
-      "program": "${workspaceFolder}/test/examples/findscu.js",
+      "program": "${workspaceFolder}/test/tests/movescu.test.js",
       "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v8.9.3/bin/node"
     }
   ]

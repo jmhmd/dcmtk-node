@@ -1,4 +1,5 @@
 const spawn = require('cross-spawn');
+const { fork } = require('child_process');
 const outputParsers = require('./output-parsers');
 const path = require('path');
 const split2 = require('split2');
@@ -31,7 +32,27 @@ module.exports = (_options) => {
     if (options.verbose || settings.verbose) {
       console.log('Executing:', [execString].concat(args).join(' '));
     }
-    const child = spawn(execString, args, { env });
+
+    // const child = spawn(execString, args, { env });
+    /**
+     * We're using child_process.fork here to start the spawn wrapper module, which then actually
+     * calls spawn on the external function rather than calling spawn directly here. The reason for
+     * doing this is so that we can handle crashes of the parent process gracefully and clean up any
+     * orphaned child processes. Apparently, when the parent process exits with SIGKILL or some
+     * other non-graceful exit, child processes are orphaned and adopted by the `init` process (pid
+     * = 1). So then we don't have a way of killing that process after our parent app crashed. The
+     * solution here is to wrap that spawn call in a forked node process, which has an IPC channel
+     * with the parent. We can listen for the 'disconnect' event when that channel closes, and
+     * gracefully exit the child processes.
+     */
+    // { silent: true } pipes stdio from the forked process to the parent.
+    const child = fork(path.resolve(__dirname, './spawn-wrapper.js'), [], { stdio: 'pipe' });
+    child.send({
+      signal: 'spawn',
+      execString,
+      args,
+      env,
+    });
 
     if (outputParsers[command]) {
       child.parsed = {
@@ -55,7 +76,10 @@ module.exports = (_options) => {
 
     child.on('close', (code, signal) => {
       if (code && code !== 0) {
-        child.emit('error', new Error(errLog.length ? errLog : 'Unknown error'));
+        child.emit(
+          'error',
+          new Error(errLog.length ? errLog : `Unknown error, code: ${code}, signal: ${signal}`),
+        );
       }
     });
 

@@ -9,8 +9,21 @@ harness.start((err) => {
   setTimeout(() => {
     dcmtk.findscu(
       {
-        args:
-          '--study -k QueryRetrieveLevel=STUDY -aet TEST -aec TEST -k AccessionNumber -k PatientName localhost 4141',
+        args: [
+          '--study',
+          '-k',
+          'QueryRetrieveLevel=STUDY',
+          '-aet',
+          'TEST',
+          '-aec',
+          'TEST',
+          '-k',
+          'AccessionNumber',
+          '-k',
+          'PatientName',
+          'localhost',
+          '4141',
+        ],
       },
       (finderr, output) => {
         console.log('FINDERR:', finderr);
@@ -20,4 +33,3 @@ harness.start((err) => {
     );
   }, 1000);
 });
-
