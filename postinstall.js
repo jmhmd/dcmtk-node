@@ -18,9 +18,19 @@ const installedAsModule = path.basename(path.resolve(__dirname, '..')) === 'node
 
 Object.keys(BINARIES).forEach((os) => {
   // on our platform, delete unnecessary binaries. on other platforms, delete all binaries
-  if (os == platform) {
+  // compare only the first 3 characters, so win32 and win64 will both match on windows
+  if (os.slice(0,3) == platform.slice(0,3)) {
     const files = fs.readdirSync(BINARIES[os]);
     files.forEach((file) => {
+      // only delete .exe on windows, not .dll
+      if (os == 'win32' || os == 'win64') {
+        if (file.slice(-3) !== 'exe') {
+          if (!installedAsModule) {
+            console.log('Not .exe, do not delete:', file);
+          }
+          return true;
+        }
+      }
       const filename = path.basename(file, '.exe');
       if (!binariesToKeep.includes(filename)) {
         const filePath = path.resolve(BINARIES[os], file);
