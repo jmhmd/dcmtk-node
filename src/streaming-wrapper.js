@@ -66,8 +66,7 @@ module.exports = (_options) => {
     }
 
     function handleErrors(line) {
-      // console.log(line);
-      if (regexes.errorRegex.test(line)) {
+      if (regexes.errorRegex.test(line) || regexes.cMoveErrorStatus.test(line)) {
         if (errLog.length > logLength) {
           errLog.shift();
         }

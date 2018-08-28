@@ -1,12 +1,5 @@
-const { movescu, storescp } = require('../..')();
-const { onListenerUp } = require('./util');
+const { movescu } = require('../..')();
 const harness = require('../external-pacs-harness');
-const path = require('path');
-const fs = require('fs-extra');
-
-let storeServer;
-const storeServerPort = '4002';
-const localOutputDir = path.join(__dirname, '../data/output');
 
 const calledAET = 'TEST';
 const calledPort = '4141';
@@ -89,15 +82,14 @@ describe('called AET online, local AET offline', () => {
       responses.push(response);
     });
 
-    mover.on('close', async (code) => {
+    mover.on('close', async () => {
       expect(responses.length).toEqual(1);
       expect(responses[0].status).toEqual('0xa702');
-      expect(code).toEqual(0);
       done();
     });
 
     mover.on('error', (err) => {
-      expect(err.message).toEqual(expect.stringContaining('Sub-Association Request Failed'));
+      expect(err.message).toEqual(expect.stringContaining('Out of resources - Suboperations'));
     });
   });
 
@@ -130,15 +122,14 @@ describe('called AET online, local AET offline', () => {
       responses.push(response);
     });
 
-    mover.on('close', async (code) => {
+    mover.on('close', async () => {
       expect(responses.length).toEqual(1);
       expect(responses[0].status).toEqual('0xa801');
-      expect(code).toEqual(0);
       done();
     });
 
     mover.on('error', (err) => {
-      expect(err.message).toEqual(expect.stringContaining('Sub-Association Request Failed'));
+      expect(err.message).toEqual(expect.stringContaining('Move Destination unknown'));
     });
   });
 });
