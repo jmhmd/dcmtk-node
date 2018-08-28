@@ -63,11 +63,7 @@ test('moves a series of images from pacs to local', (done) => {
     ],
   });
 
-  mover.parsed.stderr.on('response', (response) => {
-    responses.push(response);
-  });
-
-  mover.parsed.stdout.on('response', (response) => {
+  mover.parsed.on('response', (response) => {
     responses.push(response);
   });
 
@@ -92,6 +88,7 @@ test('moves a series of images from pacs to local', (done) => {
   });
 
   mover.on('error', (err) => {
+    expect(err).toBeUndefined();
     throw new Error(`Error on movescu: ${err}`);
   });
 

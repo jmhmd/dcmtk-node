@@ -5,7 +5,7 @@ module.exports = function findscu(output) {
   const response = {};
   let multiLine;
   // remove any null bytes
-  output = output.replace(regexes.nullByte, '');
+  output = output.replace(regexes.nullByte, ''); // eslint-disable-line no-param-reassign
   // split on newlines
   const lines = output.split(/\r?\n/);
 

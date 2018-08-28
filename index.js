@@ -14,12 +14,6 @@ module.exports = (settings = {}) => {
   function getWrapper(command, _options) {
     const options = _options;
 
-    // It seems that on windows all output goes to stdout while on macOS, output of some
-    // tools goes to stderr. This has not been thoroughly tested.
-    if (options && platform.platform.indexOf('win') === 0) {
-      options.outputInStderr = false;
-    }
-
     let wrapper;
     switch (command) {
       case 'storescp':
@@ -51,7 +45,6 @@ module.exports = (settings = {}) => {
           command,
           platform,
           settings,
-          outputInStderr: options && options.outputInStderr,
         });
         break;
     }
@@ -60,8 +53,8 @@ module.exports = (settings = {}) => {
 
   return {
     dcmdump: getWrapper('dcmdump'),
-    echoscu: getWrapper('echoscu', { outputInStderr: true }),
-    findscu: getWrapper('findscu', { outputInStderr: true }),
+    echoscu: getWrapper('echoscu'),
+    findscu: getWrapper('findscu'),
     storescp: getWrapper('storescp'),
     dcmqrscp: getWrapper('dcmqrscp'),
     movescu: getWrapper('movescu'),

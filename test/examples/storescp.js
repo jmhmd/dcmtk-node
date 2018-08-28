@@ -1,4 +1,4 @@
-const dcmtk = require('../../')();
+const dcmtk = require('../../')({ verbose: true });
 const split2 = require('split2');
 const path = require('path');
 
@@ -8,7 +8,7 @@ const outputdir = path.join(__dirname, '../data/output');
  * Start storescp server and log output
  */
 const storescp = dcmtk.storescp({
-  args: ['-od', outputdir, '-su', 'PB', '-aet', 'TESTLISTENER', '--fork', '4002'],
+  args: ['-od', outputdir, '-su', 'PB', '-aet', 'TESTLISTENER', '--fork', '4242'],
 });
 
 storescp.on('close', (code, signal) => {

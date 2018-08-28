@@ -1,5 +1,5 @@
-const spawn = require('cross-spawn');
 const { fork } = require('child_process');
+const mergeStream = require('merge-stream');
 const outputParsers = require('./output-parsers');
 const path = require('path');
 const split2 = require('split2');
@@ -54,14 +54,19 @@ module.exports = (_options) => {
       env,
     });
 
+    const combinedOutputStream = mergeStream(child.stdout, child.stderr);
+
     if (outputParsers[command]) {
-      child.parsed = {
-        stderr: outputParsers[command](child.stderr, 'stderr'),
-        stdout: outputParsers[command](child.stdout, 'stdout'),
-      };
+      // child.parsed = {
+      //   stderr: outputParsers[command](child.stderr, 'stderr'),
+      //   stdout: outputParsers[command](child.stdout, 'stdout'),
+      //   output: outputParsers[command](combinedOutputStream),
+      // };
+      child.parsed = outputParsers[command](combinedOutputStream);
     }
 
     function handleErrors(line) {
+      // console.log(line);
       if (regexes.errorRegex.test(line)) {
         if (errLog.length > logLength) {
           errLog.shift();
@@ -71,11 +76,16 @@ module.exports = (_options) => {
     }
 
     // keep fixed length recent log to find error messages if needed
-    child.stdout.pipe(split2()).on('data', handleErrors);
-    child.stderr.pipe(split2()).on('data', handleErrors);
+    // child.stdout.pipe(split2()).on('data', handleErrors);
+    // child.stderr.pipe(split2()).on('data', handleErrors);
+    combinedOutputStream.pipe(split2()).on('data', handleErrors);
 
     child.on('close', (code, signal) => {
-      if (code && code !== 0) {
+      // Cannot rely on the exit code to know whether or not there was an error in the operation -
+      // for instance, movescu coordinates move operations between two other servers. If the
+      // connection between the two other servers is faulty, an error will be reported in output but
+      // the operation will otherwise complete successfully with exit code 0
+      if (errLog.length > 0 || code !== 0) {
         child.emit(
           'error',
           new Error(errLog.length ? errLog : `Unknown error, code: ${code}, signal: ${signal}`),

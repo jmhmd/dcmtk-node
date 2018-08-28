@@ -11,7 +11,7 @@ const regexes = {
   dimseStatus: /DIMSE Status +: ([0-9a-zA-Z]{6}): (.+$)/,
 };
 
-module.exports = function movescu(stream, outputType) {
+module.exports = function movescu(stream) {
   const emitter = new EventEmitter();
 
   let currentResponse;

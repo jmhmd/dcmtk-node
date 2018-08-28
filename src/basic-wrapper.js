@@ -5,7 +5,7 @@ const regexes = require('./output-parsers/regexes');
 
 module.exports = (_options) => {
   const {
-    command, platform, settings, outputInStderr,
+    command, platform, settings,
   } = _options;
 
   const binaryString = path.join(platform.binaryPath, command);
@@ -48,8 +48,6 @@ module.exports = (_options) => {
     }
 
     const child = spawn(binaryString, args, { env });
-    let stdout = '';
-    let stderr = '';
     let combined = '';
 
     /**
@@ -59,11 +57,9 @@ module.exports = (_options) => {
      */
     /* eslint no-return-assign: ["error", "except-parens"] */
     child.stdout.on('data', (data) => {
-      stdout += data;
       combined += data;
     });
     child.stderr.on('data', (data) => {
-      stderr += data;
       combined += data;
     });
     child.on('error', callback);
@@ -84,7 +80,7 @@ module.exports = (_options) => {
         lines.forEach((l) => {
           if (regexes.errorRegex.test(l)) err += `${l}\n`;
         });
-        return callback(err.length ? err : `Unknown error\nSTDOUT: ${stdout}\nSTDERR: ${stderr}`);
+        return callback(err.length ? err : `Unknown error\nSTDOUT/STDERR: ${combined}`);
       }
 
       // Pass the combined stdout and stderr output to the parser, as sometimes the errors are
@@ -92,8 +88,7 @@ module.exports = (_options) => {
       return callback(null, {
         parsed:
           outputParsers[command] && combined ? outputParsers[command](combined, args) : combined,
-        stdout,
-        stderr,
+        output: combined,
       });
     });
     return true;
