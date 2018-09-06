@@ -11,9 +11,7 @@ module.exports = (settings = {}) => {
       DCMDICTPATH: platform.DCMDICTPATH,
     },
   });
-  function getWrapper(command, _options) {
-    const options = _options;
-
+  function getWrapper(command) {
     let wrapper;
     switch (command) {
       case 'storescp':
