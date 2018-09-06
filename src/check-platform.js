@@ -11,10 +11,10 @@ const SUPPORTED_PLATFORMS = [
 ];
 
 const BINARIES = {
-  win32: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.2-win32-dynamic', 'bin'),
-  win64: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.2-win32-dynamic', 'bin'),
-  darwin: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.0-darwin', 'bin'),
-  linux: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.2-linux-x86_64-static', 'bin'),
+  win32: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.2-win32-dynamic', 'bin').replace('app.asar', 'app.asar.unpacked'),
+  win64: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.2-win32-dynamic', 'bin').replace('app.asar', 'app.asar.unpacked'),
+  darwin: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.0-darwin', 'bin').replace('app.asar', 'app.asar.unpacked'),
+  linux: path.resolve(__dirname, '..', 'lib', 'dcmtk', 'dcmtk-3.6.2-linux-x86_64-static', 'bin').replace('app.asar', 'app.asar.unpacked'),
 };
 
 const binaryPath = BINARIES[platform];
