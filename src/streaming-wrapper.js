@@ -46,7 +46,10 @@ module.exports = (_options) => {
      * gracefully exit the child processes.
      */
     // { silent: true } pipes stdio from the forked process to the parent.
-    const child = fork(path.resolve(__dirname, './spawn-wrapper.js'), [], { stdio: 'pipe' });
+    const child = fork(path.resolve(__dirname, './spawn-wrapper.js'), [], {
+      stdio: 'pipe',
+      execArgv: [], // prevents crash when --inspect flag set on parent node process
+    });
     child.send({
       signal: 'spawn',
       execString,
