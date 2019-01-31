@@ -56,6 +56,7 @@ function splitByFile(output) {
   while (lines.length > 0) chunks.push(lines.splice(0, size));
   const fileDumps = chunks.map((chunk) => {
     // check for parsing errors for the file
+    if (!chunk[3]) return false;
     let errors = chunk[3].match(regexes.captureErrors);
     if (errors) errors = errors.filter(Boolean);
     return {
@@ -67,7 +68,7 @@ function splitByFile(output) {
       errors,
     };
   });
-  return fileDumps;
+  return fileDumps.filter(Boolean);
 }
 
 module.exports = function dcmdump(output, args) {
