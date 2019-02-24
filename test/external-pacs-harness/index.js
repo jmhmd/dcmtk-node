@@ -1,10 +1,10 @@
-const dcmtk = require('../../')();
-
 const split2 = require('split2');
 const path = require('path');
 const fs = require('fs');
 const async = require('async');
 const { promisify } = require('util');
+
+const dcmtk = require('../../')();
 
 let child;
 const unlink = promisify(fs.unlink);
@@ -54,7 +54,7 @@ const start = async (cb) => {
         loglevel: 'debug',
       });
 
-      child.on('close', (code) => {
+      child.on('close', () => {
         // console.log(`Closed dcmqrscp server with code ${code} and signal ${signal}`);
       });
 
