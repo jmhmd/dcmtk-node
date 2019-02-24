@@ -24,18 +24,18 @@
   "license": "UNLICENSED",
   "homepage": "https://bitbucket.org/hopkinsdeeplearning/dcmtk-node#readme",
   "dependencies": {
-    "cross-spawn": "^5.1.0",
+    "cross-spawn": "^6.0.5",
     "merge-stream": "^1.0.1",
-    "rimraf": "^2.6.2",
-    "split2": "^2.2.0"
+    "rimraf": "^2.6.3",
+    "split2": "^3.1.0"
   },
   "devDependencies": {
-    "async": "^2.6.0",
-    "eslint": "^4.14.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "fs-extra": "^5.0.0",
-    "jest": "^22.0.6",
+    "async": "^2.6.2",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "fs-extra": "^7.0.1",
+    "jest": "^24.1.0",
     "ps-node": "^0.1.6"
   }
 }
