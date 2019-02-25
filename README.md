@@ -1,8 +1,8 @@
 # dcmtk-node
 
-Node.js wrapper for the OFFIS dcmtk DICOM library with parsed output
+Node.js wrapper for the OFFIS dcmtk DICOM library with parsed output. Bundles the pre-compiled binaries for Windows, macOS, and Linux.
 
-Included commands:
+Included commands so far:
 
 ```
 dcmdump
