@@ -4,9 +4,7 @@ const path = require('path');
 const regexes = require('./output-parsers/regexes');
 
 module.exports = (_options) => {
-  const {
-    command, platform, settings,
-  } = _options;
+  const { command, platform, settings } = _options;
 
   const binaryString = path.join(platform.binaryPath, command);
 
@@ -71,8 +69,16 @@ module.exports = (_options) => {
       // Only return without parsing if exit code is non-zero AND we haven't set the
       // --scan-directories flag. --scan-directories with dcmdump will return a non-zero exit code
       // if corrputed or non-dicom files are encountered, but we want to go ahead and process this
-      // output
-      if (code && code !== 0 && !args.includes('--scan-directories') && !args.includes('+sd')) {
+      // output. Also ignore errors if --ignore-errors flag is set and go ahead and try to parse the
+      // output.
+      if (
+        code &&
+        code !== 0 &&
+        !args.includes('--scan-directories') &&
+        !args.includes('+sd') &&
+        !args.includes('--ignore-errors') &&
+        !args.includes('+E')
+      ) {
         // find any error messages in stdout or stderr -- should be lines beginning
         // with 'E: ...' or 'F: ...'
         let err = '';

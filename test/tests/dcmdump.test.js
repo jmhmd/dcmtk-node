@@ -6,6 +6,7 @@ const newlineFileToDump = path.join(__dirname, '../data/dicom-input/newline seri
 const directoryToDump = path.join(__dirname, '../data/dicom-input/space in path');
 const mixedDirectoryToDump = path.join(__dirname, '../data/dicom-input/mixed non-dicom');
 const nonDicomFile = path.join(__dirname, '../data/dicom-input/mixed non-dicom/non-dicom.txt');
+const corruptImage = path.join(__dirname, '../data/dicom-input/corrupt mri/1.dcm');
 
 test('dumps a dicom file and returns parsed results', (done) => {
   dcmdump(
@@ -17,6 +18,19 @@ test('dumps a dicom file and returns parsed results', (done) => {
       // check a few headers
       expect(output.parsed['0008,0022'].value).toBe('20150513');
       expect(output.parsed['0008,0050'].value).toBe('b72779a5-bb3e-414e-b75d-584c52e25db6');
+      done();
+    },
+  );
+});
+
+test('handles corrupted image with --ignore-errors option', (done) => {
+  dcmdump(
+    {
+      args: ['--ignore-errors', corruptImage],
+    },
+    (err, output) => {
+      expect(err).toBeFalsy();
+      expect(output.parsed['0008,0050'].value).toBe('3790276999820844');
       done();
     },
   );
