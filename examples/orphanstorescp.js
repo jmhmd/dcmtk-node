@@ -2,10 +2,10 @@
  * We should not be able to create an orphan process by killing the parent due to wrapping the spawn
  * call in a forked process, then listening for 'disconnect'
  */
-const { storescp } = require('../..')();
-const { onListenerUp } = require('../tests/util');
 const path = require('path');
-const ps = require('ps-node');
+// const ps = require('ps-node');
+const { storescp } = require('../')();
+const { onListenerUp } = require('../test/tests/util');
 
 const storeServerPort = '4002';
 const localOutputDir = path.join(__dirname, '../data/output');

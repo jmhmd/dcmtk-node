@@ -1,6 +1,6 @@
-const dcmtk = require('../../')({ verbose: true });
 const split2 = require('split2');
 const path = require('path');
+const dcmtk = require('../')({ verbose: true });
 
 const outputdir = path.join(__dirname, '../data/output');
 

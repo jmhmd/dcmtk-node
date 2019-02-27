@@ -1,6 +1,6 @@
-const { dcmconv } = require('../../')();
 const fs = require('fs-extra');
 const path = require('path');
+const { dcmconv } = require('../../')();
 
 const localOutputDir = path.join(__dirname, '../data/output');
 const genericFileToConvert = path.join(__dirname, '../data/dicom-input/space in path/01.dcm');

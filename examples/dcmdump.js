@@ -1,5 +1,5 @@
-const dcmtk = require('../../')({ verbose: true });
 const path = require('path');
+const dcmtk = require('../')({ verbose: true });
 
 /**
  * Basic file dump
@@ -18,16 +18,13 @@ dcmtk.dcmdump(
     console.log('PARSED:', output.parsed);
   },
 );
-return;
 
 /**
  * Invalid file
  */
 dcmtk.dcmdump(
   {
-    args: [
-      path.join(__dirname, '../dicom/first/notvalid'),
-    ],
+    args: [path.join(__dirname, '../dicom/first/notvalid')],
   },
   (err, output) => {
     console.log('ERR:', err);

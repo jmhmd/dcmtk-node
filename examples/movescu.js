@@ -1,5 +1,4 @@
-const dcmtk = require('../../')();
-const split2 = require('split2');
+const dcmtk = require('../')();
 
 /**
  * Test movescu command. Storescp server must be running
