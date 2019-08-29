@@ -2,9 +2,11 @@ const checkPlatform = require('./src/check-platform');
 const basicWrapper = require('./src/basic-wrapper');
 const streamingWrapper = require('./src/streaming-wrapper');
 
-const platform = checkPlatform();
 
 module.exports = (settings = {}) => {
+  const { libPath } = settings;
+  const platform = checkPlatform(libPath);
+
   Object.assign(settings, {
     loglevel: 'info',
     env: {

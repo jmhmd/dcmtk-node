@@ -2,7 +2,7 @@ const split2 = require('split2');
 const path = require('path');
 const dcmtk = require('../')({ verbose: true });
 
-const outputdir = path.join(__dirname, '../data/output');
+const outputdir = path.join(__dirname, '../test/data/output');
 
 /**
  * Start storescp server and log output

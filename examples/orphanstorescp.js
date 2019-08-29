@@ -8,7 +8,7 @@ const { storescp } = require('../')();
 const { onListenerUp } = require('../test/tests/util');
 
 const storeServerPort = '4002';
-const localOutputDir = path.join(__dirname, '../data/output');
+const localOutputDir = path.join(__dirname, '../test/data/output');
 
 const storeServer = storescp({
   args: ['-od', localOutputDir, '-su', 'PB', '-aet', 'TEST', '--fork', storeServerPort],

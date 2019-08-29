@@ -146,3 +146,13 @@ storeServer.stderr.pipe(split2()).on('data', data => {
   console.log(`STDERR: ${data}`);
 });
 ```
+
+## Options
+`libPath`: `./lib` Pass the absolute path to the `lib` directory, if referencing a version outside the
+module folder heirarchy. Must include same folder structure as the included `lib` directory.
+
+`verbose`: `false` More logging
+
+`loglevel`: Set dcmtk log level
+
+`env`: Set any environment variables to be passed to `spawn` calls in object format
