@@ -87,12 +87,16 @@ module.exports = (_options) => {
       // for instance, movescu coordinates move operations between two other servers. If the
       // connection between the two other servers is faulty, an error will be reported in output but
       // the operation will otherwise complete successfully with exit code 0
+      if (signal === 'SIGINT' || signal === 'SIGTERM') {
+        return true;
+      }
       if (errLog.length > 0 || code !== 0) {
         child.emit(
           'error',
           new Error(errLog.length ? errLog : `Unknown error, code: ${code}, signal: ${signal}`),
         );
       }
+      return true;
     });
 
     process.on('exit', () => child.kill());

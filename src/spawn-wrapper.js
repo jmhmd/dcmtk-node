@@ -25,6 +25,10 @@ process.on('SIGTERM', () => {
   killSpawnAndExit();
 });
 
+process.on('SIGINT', () => {
+  killSpawnAndExit();
+});
+
 process.on('disconnect', () => {
   killSpawnAndExit();
 });
