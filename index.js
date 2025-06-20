@@ -60,6 +60,9 @@ module.exports = (settings = {}) => {
     movescu: getWrapper('movescu'),
     dcmqridx: getWrapper('dcmqridx'),
     dcmconv: getWrapper('dcmconv'),
+    getscu: getWrapper('getscu'),
+    storescu: getWrapper('storescu'),
+    dcmodify: getWrapper('dcmodify'),
     platform,
   };
 };

@@ -1,8 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
+const { execSync } = require('child_process');
 const { platform, BINARIES } = require('./src/check-platform')();
-
+ 
 const binariesToKeep = [
   'dcmdump',
   'echoscu',
@@ -12,33 +13,39 @@ const binariesToKeep = [
   'movescu',
   'dcmqridx',
   'dcmconv',
+  'storescu',
+  'getscu',
+  'dcmodify'
 ];
-
+ 
 const installedAsModule = path.basename(path.resolve(__dirname, '..')) === 'node_modules';
-
+ 
 Object.keys(BINARIES).forEach((os) => {
-  // on our platform, delete unnecessary binaries. on other platforms, delete all binaries
-  // compare only the first 3 characters, so win32 and win64 will both match on windows
-  if (os.slice(0,3) == platform.slice(0,3)) {
+  if (os.slice(0, 3) === platform.slice(0, 3)) {
     const files = fs.readdirSync(BINARIES[os]);
     files.forEach((file) => {
-      // only delete .exe on windows, not .dll
-      if (os == 'win32' || os == 'win64') {
-        if (file.slice(-3) !== 'exe') {
-          if (!installedAsModule) {
-            console.log('Not .exe, do not delete:', file);
-          }
-          return true;
-        }
-      }
-      const filename = path.basename(file, '.exe');
+      const filename = path.basename(file, path.extname(file));
+ 
+      // Filter out files not in our keep list
       if (!binariesToKeep.includes(filename)) {
         const filePath = path.resolve(BINARIES[os], file);
-        if (fs.accessSync(filePath) === undefined) {
+        if (fs.existsSync(filePath)) {
           if (installedAsModule) {
             fs.unlinkSync(filePath);
           } else {
             console.log('Delete', filePath);
+          }
+        }
+      } else {
+        // ✅ Make sure all kept binaries are executable and unquarantined (on macOS)
+        const fullPath = path.resolve(BINARIES[os], file);
+        if (platform === 'darwin') {
+          try {
+            execSync(`chmod +x "${fullPath}"`);
+            execSync(`xattr -rd com.apple.quarantine "${fullPath}"`);
+            console.log(`✅ Fixed permissions for ${file}`);
+          } catch (err) {
+            console.warn(`⚠️ Couldn't fix ${file}:`, err.message);
           }
         }
       }
@@ -52,3 +59,5 @@ Object.keys(BINARIES).forEach((os) => {
     }
   }
 });
+ 
+ 
