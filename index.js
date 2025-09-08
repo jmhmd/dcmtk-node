@@ -55,7 +55,7 @@ module.exports = (settings = {}) => {
           settings: Object.assign({}, settings, { loglevel: 'info' }),
         });
         break;
-  
+       
       default:
         wrapper = basicWrapper({
           command,
@@ -78,6 +78,7 @@ module.exports = (settings = {}) => {
     dcmconv: getWrapper('dcmconv'),
     pdf2dcm: getWrapper('pdf2dcm'),
     storescu: getWrapper('storescu'),
+    dcmodify: getWrapper('dcmodify'),
     platform,
   };
 };
