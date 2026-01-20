@@ -13,6 +13,8 @@ dcmqrscp
 movescu
 dcmqridx
 dcmconv
+pdf2dcm
+storescu
 ```
 
 ## Usage

@@ -40,6 +40,22 @@ module.exports = (settings = {}) => {
         });
         break;
 
+      case 'pdf2dcm':
+        wrapper = basicWrapper({
+          command,
+          platform,
+          settings: Object.assign({}, settings, { loglevel: 'info' }),
+        });
+        break;
+      
+      case 'storescu': 
+        wrapper = streamingWrapper({
+          command,
+          platform,
+          settings: Object.assign({}, settings, { loglevel: 'info' }),
+        });
+        break;
+       
       default:
         wrapper = basicWrapper({
           command,
@@ -60,6 +76,9 @@ module.exports = (settings = {}) => {
     movescu: getWrapper('movescu'),
     dcmqridx: getWrapper('dcmqridx'),
     dcmconv: getWrapper('dcmconv'),
+    pdf2dcm: getWrapper('pdf2dcm'),
+    storescu: getWrapper('storescu'),
+    dcmodify: getWrapper('dcmodify'),
     platform,
   };
 };
